@@ -1,5 +1,6 @@
 import 'package:authentication/homepage.dart';
 import 'package:authentication/login.dart';
+import 'package:authentication/verify.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +16,21 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // ignore: avoid_print
+            print(snapshot.data);
+            if (snapshot.data!.emailVerified) {
               return const HomePage();
             } else {
-              return const Login();
+              return const Verify();
             }
-          }),
+          } else {
+            return const Login();
+          }
+        },
+      ),
     );
   }
 }
