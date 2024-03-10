@@ -15,16 +15,41 @@ class _SignupState extends State<SignupScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  // signup() async {
-  //   await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email.text, password: password.text);
-  //   Get.ofAll(Wrapper());
-  // }
+  Future<void> signup() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
+      Get.offAll(const Wrapper());
+    } catch (e) {
+      // Print error message
+      print('Signup Error: $e');
+      // Show an error dialog or message to the user
+      showDialog(
+        builder: (context) => AlertDialog(
+          title: const Text('Signup Error'),
+          content: Text('$e'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    }
+  }
 
-  signup() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.text, password: password.text);
-    Get.offAll(const Wrapper());
+  @override
+  void dispose() {
+    // Dispose of text editing controllers
+    email.dispose();
+    password.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,7 +61,6 @@ class _SignupState extends State<SignupScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: email,
@@ -46,21 +70,23 @@ class _SignupState extends State<SignupScreen> {
               obscureText: passwordObsecured,
               controller: password,
               decoration: InputDecoration(
-                  hintText: "Enter password",
-                  suffix: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          passwordObsecured = !passwordObsecured;
-                        });
-                      },
-                      icon: Icon(
-                        passwordObsecured
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ))),
+                hintText: "Enter password",
+                suffix: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      passwordObsecured = !passwordObsecured;
+                    });
+                  },
+                  icon: Icon(
+                    passwordObsecured ? Icons.visibility_off : Icons.visibility,
+                  ),
+                ),
+              ),
             ),
             ElevatedButton(
-                onPressed: (() => signup()), child: const Text("SignUp"))
+              onPressed: () => signup(),
+              child: const Text("Sign Up"),
+            ),
           ],
         ),
       ),

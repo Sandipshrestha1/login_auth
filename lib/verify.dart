@@ -1,38 +1,3 @@
-// import 'package:flutter/material.dart';
-
-// class Verify extends StatelessWidget {
-//   const Verify({super.key});
-
-//   @override
-//   void initstate() {
-//     sendVerifylink();
-//     super.initState();
-//   }
-
-//   sendVerifylink() async {
-//     final user = FirebaseAuth.instance.currentUser!;
-//     await user.sendEmailVerification().then((value) => {
-//           Get.snackbar * "Link sent",
-//           'A link has sent to your email',
-//           margin: EdgeInsets.all(30),
-//           snackPosition: SnackPosition.BOTTOM
-//         });
-//   }
-
-//   reload() async {
-//     await FirebaseAuth.instance.currentUser!
-//         .reload()
-//         .then((value) => {Get.ofAll(Wrapper)});
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
-
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart'; // Assuming you're using GetX for state management
@@ -41,6 +6,7 @@ class Verify extends StatefulWidget {
   const Verify({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _VerifyState createState() => _VerifyState();
 }
 
